@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <form action="/create-challenge" method="POST">
+      <label>Challenge Name:</label>
+      <input type="text" name="challengeName" placeholder="Challenge Name" required />
+      <label>Challenge Question:</label>
+      <input type="text" name="challengeQuestion" placeholder="Challenge Question" required />
+      <label>Challenge Answers: </label>
+      <input type="text" name="challengeAnswer" placeholder="Challenge Answers" required />
+      <label>Challenge Category</label>
+      <select name="challengeDifficulty">
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+
+      <button type="submit">Create Challenge</button>
+    </form>
+  </body>
+</html>
