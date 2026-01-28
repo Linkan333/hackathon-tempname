@@ -1,3 +1,8 @@
+* {
+    align-items: center;
+    justify-content: center;
+}
+
 
 /* Grundinställningar */
 body {
