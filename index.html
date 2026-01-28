@@ -1,53 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyHack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>Responsive Tailwind Navbar</title>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.05); }
+    }
+    
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-50px, 40px) scale(0.95); }
+    }
+    
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, 50px) scale(1.02); }
+    }
+    
+    .circle-1 { animation: float1 20s ease-in-out infinite; }
+    .circle-2 { animation: float2 25s ease-in-out infinite; }
+    .circle-3 { animation: float3 18s ease-in-out infinite; }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-  <nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        
-        <div class="flex-shrink-0">
-          <a href="#" class="text-xl font-bold text-indigo-600">StudyHack</a>
+<script>
+  // fuckAssFunktion för att få året så man kan vara lat.
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("spanYear").innerHTML = new Date().getFullYear();
+  });
+</script>
+<body class="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased">
+
+  <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div class="circle-1 absolute -top-20 -left-20 w-96 h-96 bg-blue-400 rounded-full opacity-20 blur-3xl"></div>
+    <div class="circle-2 absolute top-1/3 -right-32 w-[500px] h-[500px] bg-violet-400 rounded-full opacity-15 blur-3xl"></div>
+    <div class="circle-3 absolute -bottom-32 left-1/4 w-[400px] h-[400px] bg-sky-300 rounded-full opacity-20 blur-3xl"></div>
+  </div>
+
+  <nav class="relative z-20 bg-white/70 backdrop-blur-md border-b border-slate-200/50">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="flex justify-between h-20 items-center">
+        <a href="#" class="flex items-center gap-2">
+          <span class="text-xl font-semibold text-slate-900">StudyHack</span>
+        </a>
+
+        <div class="hidden md:flex items-center gap-8">
+          <a href="/" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Hem</a>
+          <a href="/challenges" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Övningar</a>
+          <a href="/accomplishments" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Framsteg</a>
+          <a href="/login" class="ml-2 px-5 py-2.5 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors">
+            Kom igång
+          </a>
         </div>
 
-        
-        <div class="md:hidden">
-          <button id="mobile-btn" class="text-gray-700 hover:text-indigo-600 focus:outline-none">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        </div>
-
-        
-        <div class="hidden md:flex space-x-6">
-          <a href="#" class="hover:text-indigo-600">Hem</a>
-          <a href="#" class="hover:text-indigo-600">Challenges</a>
-          <a href="#" class="hover:text-indigo-600">Create Challenge</a>
-        </div>
+        <button id="menu-btn" class="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
       </div>
     </div>
 
-    
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pt-2 pb-4 space-y-1">
-      <a href="#" class="block py-2 hover:bg-gray-100 rounded">Home</a>
-      <a href="#" class="block py-2 hover:bg-gray-100 rounded">About</a>
-      <a href="#" class="block py-2 hover:bg-gray-100 rounded">Services</a>
-      <a href="#" class="block py-2 hover:bg-gray-100 rounded">Contact</a>
+    <div class="md:hidden hidden border-t border-slate-200/50 bg-white/90 backdrop-blur-md" id="mobile-menu">
+      <div class="px-6 py-4 space-y-3">
+        <a href="#" class="block py-2 text-slate-600 hover:text-slate-900 font-medium">Hem</a>
+        <a href="#" class="block py-2 text-slate-600 hover:text-slate-900 font-medium">Övningar</a>
+        <a href="#" class="block py-2 text-slate-600 hover:text-slate-900 font-medium">Framsteg</a>
+        <a href="#" class="block mt-4 px-5 py-2.5 bg-slate-900 text-white font-medium rounded-lg text-center">Kom igång</a>
+      </div>
     </div>
   </nav>
-    
-  <h1 class="text-5xl font-extrabold my-[10rem] ml-20">StudyHack</h1>
 
-    <script>
-    const btn = document.getElementById('mobile-btn');
+  <main class="relative z-10">
+    <section class="max-w-6xl mx-auto px-6 lg:px-8 pt-20 pb-24 lg:pt-28 lg:pb-32">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight tracking-tight">
+          Gör dina studier <span class="gradient-text">enklare och roligare</span>
+        </h1>
+        <p class="mt-6 text-xl text-slate-600 leading-relaxed max-w-2xl">
+          Interaktiva minispel som gör det enkelt att lära sig nya saker. Träna på allt från matematik till språk på ett sätt som faktiskt fastnar.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <a href="/login" class="px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors text-center text-lg">
+            Logga in för att börja
+          </a>
+          <a href="/nope" class="px-8 py-4 bg-white text-slate-700 font-semibold rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors text-center text-lg">
+            Läs mer...
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+
+    const btn = document.getElementById('menu-btn');
     const menu = document.getElementById('mobile-menu');
+
     btn.addEventListener('click', () => {
       menu.classList.toggle('hidden');
     });
@@ -55,4 +136,3 @@
 
 </body>
 </html>
-
