@@ -399,7 +399,7 @@ app.get('/challenges/flashcards/questions/:id', (req, res) => {
 async function storeQuestionsBasedOnSubject(selectedSubject, selectedDifficulty) {
   try {
     const response = await openai.responses.create({
-      model: 'gpt-5.1',
+      model: 'gpt-5-nano',
       input: `Ge mig 10 frågor i JSON-format. Format: [{"id": 1, "question": "string", "answer": "string"}]. Svårighetsgrad: ${selectedDifficulty}. Ämne: ${selectedSubject}. 
       
 Använd LaTeX för matematik med dubbla backslashes i JSON (t.ex. "\\\\(x^2\\\\)" för inline, "\\\\[x^2\\\\]" för display).
