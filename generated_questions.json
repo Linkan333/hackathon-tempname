@@ -1,12 +1,52 @@
 [
-  {"id": 1, "question": "Vad är skillnaden mellan volym och yta?"},
-  {"id": 2, "question": "Hur fungerar fotosyntesen hos växter?"},
-  {"id": 3, "question": "Vilket är det största planeten i vårt solsystem?"},
-  {"id": 4, "question": "Vem skrev Pippi Långstrump?"},
-  {"id": 5, "question": "Vad är den kemiska formeln för vatten?"},
-  {"id": 6, "question": "Vilket hav är världens största?"},
-  {"id": 7, "question": "Vilket grundämne har kemisk beteckning Na?"},
-  {"id": 8, "question": "Vad heter Sveriges huvudstad?"},
-  {"id": 9, "question": "Vad betyder ordet demokrati?"},
-  {"id": 10, "question": "Vilket år började andra världskriget?"}
+  {
+    "id": 1,
+    "question": "En partikel av massa m befinner sig i en oändlig kvantmekanisk låda av längd a. Skriv energinivåerna \\(E_n = \\frac{n^2 \\pi^2 \\hbar^2}{2 m a^2}\\). Ange uttrycket för E_1.",
+    "answer": "Energinivåerna är \\(E_n = \\frac{n^2 \\pi^2 \\hbar^2}{2 m a^2}\\). För n = 1 blir \\(E_1 = \\frac{\\pi^2 \\hbar^2}{2 m a^2}\\)."
+  },
+  {
+    "id": 2,
+    "question": "En partikel med massa m har energi E och momentum p enligt den relativistiska relationen \\(E^2 = p^2 c^2 + m^2 c^4\\). Uttryck p i termer av E och m.",
+    "answer": "p = \\frac{1}{c} \\sqrt{E^2 - m^2 c^4}."
+  },
+  {
+    "id": 3,
+    "question": "I en speciell relativistisk kontext gäller tidsdilatationen \\(Δt = γ Δτ\\) där γ = \\(1/\\sqrt{1 - v^2/c^2}\\). Hur ändras Δt när hastigheten v närmar sig c? Skriv i termer av γ och Δτ.",
+    "answer": "γ = \\frac{1}{\\sqrt{1 - v^2/c^2}} och \\(Δt = γ Δτ\\)."
+  },
+  {
+    "id": 4,
+    "question": "Plancks lag för en svartkropp: skriv energitäthet per frekvens \\(u(ν) = \\frac{8π h ν^3}{c^3} \\frac{1}{e^{hν/(kT)} - 1}\\).",
+    "answer": "Plancks ekvation i form av energitäthet: \\(u(ν) = \\frac{8π h ν^3}{c^3} \\frac{1}{e^{hν/(kT)} - 1}\\)."
+  },
+  {
+    "id": 5,
+    "question": "Två värmekällor med temperaturerna TH och TC (TH > TC) används i ett värmemaskin. Skriv den teoretiska verkningsgraden.",
+    "answer": "\\(η = 1 - \\frac{T_C}{T_H}\\)."
+  },
+  {
+    "id": 6,
+    "question": "Parallellplattarkondensator med area A och avstånd d i vakuum. Skriv kapacitansen C och uttryck energin U som lagras när kondensatorn laddas med laddningen Q.",
+    "answer": "C = \\frac{ε_0 A}{d}. Energi U = \\frac{Q^2}{2 C} = \\frac{1}{2} C V^2."
+  },
+  {
+    "id": 7,
+    "question": "En partikel av massa m genomgår tunnling genom en 1D-barriär av höjd V_0 (> E) och tjocklek a. Skriv tunnlingssannolikheten i förenklad form T ≈ e^{-2 κ a} med \\(κ = \\frac{\\sqrt{2 m (V_0 - E)}}{\\hbar}\\).",
+    "answer": "T ≈ \\exp(-2 κ a) med \\(κ = \\frac{\\sqrt{2 m (V_0 - E)}}{\\hbar}\\)."
+  },
+  {
+    "id": 8,
+    "question": "Compton-skifte: En foton med våglängden λ träffar en fri elektron. Skriv formeln för förändringen i våglängd Δλ.",
+    "answer": "\\(Δλ = \\frac{h}{m_e c} (1 - \\cos θ)\\)."
+  },
+  {
+    "id": 9,
+    "question": "Fermi-Dirac-occupationsfunktionen f(ε) = \\frac{1}{e^{(ε-μ)/(kT)} + 1}. Beskriv dess beteende i T → 0.",
+    "answer": "Vid T → 0 är f(ε) ≈ 1 för ε < μ och ≈ 0 för ε > μ (en skarp tröskel vid ε = μ)."
+  },
+  {
+    "id": 10,
+    "question": "Schwarzschildradien för en siffers massa M given av R_S = \\frac{2 G M}{c^2}. Beräkna R_S för solens massa M_⊙ ≈ 1.99 × 10^{30} kg. Skriv formeln och värdet i kilometer.",
+    "answer": "R_S = \\frac{2 G M}{c^2}, för M = M_⊙ ger R_S ≈ 2.95 km."
+  }
 ]

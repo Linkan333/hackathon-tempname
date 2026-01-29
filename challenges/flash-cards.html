@@ -4,6 +4,19 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/assets/flashcard-style.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+
   <style>
     .flip-card {
       background-color: transparent;
@@ -38,6 +51,7 @@
       align-items: center;
       padding: 40px;
       border-radius: 8px;
+      overflow-y: auto;
     }
 
     .flip-card-front {
@@ -62,6 +76,26 @@
       color: white;
       margin-bottom: 15px;
     }
+
+    /* Code block styling */
+    pre[class*="language-"] {
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      max-width: 100%;
+    }
+
+    code[class*="language-"] {
+      font-size: 0.9rem;
+    }
+
+    .katex {
+      font-size: 1.1em;
+    }
+
+    .katex-display {
+      margin: 15px 0;
+    }
   </style>
 </head>
 
@@ -72,43 +106,45 @@
     <div class="stats-container">
       <div class="stat-box">Nivå: <span class="value">1</span></div>
       <div class="stat-box">XP: <span class="value">0</span></div>
-      <div class="stat-box">Streak: <span class="value">0</span></div>
+      <div class="stat-box">Streak: <span class="value" id="streak"></span></div>
+      <select id="subjectSelect" class="subject-dropdown">
+        <option value="">Laddar ämnen...</option>
+      </select>
+      <select id="difficultySelect" class="subject-dropdown">
+        <option value="">Laddar svårigheter</option>
+      </select>
     </div>
   </header>
 
-  <!-- Modal Overlay -->
-  <div class="modal-overlay hidden" id="quizModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Quiz Utmaning</h3>
-      </div>
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <h3>Flashcards</h3>
+      <span class="question-counter">Fråga <span id="currentQuestion">1</span> av <span
+          id="totalQuestions">10</span></span>
+    </div>
 
-      <!-- Flip Card -->
-      <div class="flip-card">
-        <div class="flip-card-inner" id="flipCardInner">
-          <div class="flip-card-front">
-            <h4 id="questionText">Vad är 2 + 2?</h4>
-            <p class="hint">Klicka "Vänd" för att se svaret</p>
-          </div>
-          <div class="flip-card-back">
-            <h4 id="answerText">4</h4>
-            <p>Detta är det rätta svaret!</p>
-          </div>
+    <div class="flip-card">
+      <div class="flip-card-inner" id="flipCardInner">
+        <div class="flip-card-front">
+          <div id="questionText">Välj svårighets grad och ämne.</div>
+        </div>
+        <div class="flip-card-back">
+          <div id="answerText">4</div>
+          <p>Detta är det rätta svaret!</p>
         </div>
       </div>
+    </div>
 
-      <!-- Controls -->
-      <div class="quiz-controls">
-        <button class="btn-control btn-fail" id="btnFail">
-          ❌ Fel
-        </button>
-        <button class="btn-control btn-flip" id="btnFlip">
-          🔄 Vänd
-        </button>
-        <button class="btn-control btn-success" id="btnSuccess">
-          ✅ Rätt
-        </button>
-      </div>
+    <div class="quiz-controls">
+      <button class="btn-control btn-fail" id="btnFail">
+        ❌ Fel
+      </button>
+      <button class="btn-control btn-flip" id="btnFlip">
+        🔄 Vänd
+      </button>
+      <button class="btn-control btn-success" id="btnSuccess" onclick="loadStreak()">
+        ✅ Rätt
+      </button>
     </div>
   </div>
 
