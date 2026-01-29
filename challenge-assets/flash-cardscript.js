@@ -1,6 +1,9 @@
 const startButtons = document.querySelectorAll('.btn-start-task');
-const modal = document.getElementById('quiz-modal')
-const closeBtn = document.getElementById('close-btn')
+const modal = document.getElementById('quiz-modal');
+const closeBtn = document.getElementById('close-btn');
+const xpFill = document.getElementById('xp-fill');
+const levelDisplay = document.getElementById('level');
+let currentLevel = 1;
 
 const flipBtn = document.querySelector('.btn-flip');
 const quizCard = document.querySelector('.quiz-card');
@@ -42,11 +45,22 @@ flipBtn.addEventListener('click', flipCard);
 quizCard.addEventListener('click', flipCard);
 
 successBtn.addEventListener('click', () => {
-    currentXP += 10;
+    currentXP += 50;
+    if (currentXP >= 100) {
+        currentLevel++;
+        currentXP = currentXP - 100;
+
+        levelDisplay.innerText = currentLevel;
+
+        alert("🎉 LEVEL UP! Du är nu level " + currentLevel);
+    }
+
     xpDisplay.innerText = currentXP;
 
+    let percentage = (currentXP / 100) * 100;
+    xpFill.style.width = percentage + "%"
+
     modal.classList.add('hidden');
-    alert("Bra jobbat! +10 XP");
 });
 
 failBtn.addEventListener('click', () => {
