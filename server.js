@@ -1,12 +1,19 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
+const { OpenAI } = require("openai");
 const fs = require('fs');
 const port = 3000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+
+
+// global deklarering av env grejer
+const api = process.env.OPENAI_API_KEY;
 
 
 app.use(session({
@@ -15,6 +22,9 @@ app.use(session({
   saveUninitialized: true,
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 * 3000 }
 }));
+
+app.use('/assets', express.static('assets'));
+app.use('/challenge-assets', express.static('challenge-assets'));
 
 const difficulties = new Map();
 
@@ -205,6 +215,46 @@ const players = new Map();
 var challenges = []
 
 
+const openai = new OpenAI({
+  apiKey: api,
+});
+
+
+const subjects = [
+  { id: 1, subject: "Fysik" },
+  { id: 2, subject: "Matte" },
+  { id: 3, subject: "Kemi" },
+  { id: 4, subject: "Programmering" },
+  { id: 5, subject: "Engelska" }
+];
+
+const difficulty = [
+  { id: 1, difficulty: "Easy" },
+  { id: 2, difficulty: "Medium" },
+  { id: 3, difficulty: "Hard" },
+];
+
+const response = openai.responses.create({
+  model: 'gpt-5-nano',
+  input: 'ge mig 10 frågor',
+  store: true,
+});
+
+response.then((result) => console.log(result.output_text));
+
+
+async function storeQuestionsBasedOnSubject(subject) {
+
+}
+
+/*const flashcardQuestions = [
+  { id: 1, question: "Vad är 2+2", answer: "4" },
+  { id: 2, question: "Vad är huvudstaden i Sverige", answer: "Stockholm" },
+  { id: 3, question: "Vad är 10 * 5", answer: "50" },
+  { id: 4, question: "Vilket år upptäcktes Amerika?", answer: "1492" },
+  { id: 5, question: "Vad är 100 / 4", answer: "25" }
+];*/
+
 app.get('/player-progress', (req, res) => {
   if (!req.session.player) {
     return res.status(401).send({ error: "Not logged in" });
@@ -254,6 +304,28 @@ app.post('/create-challenge', (req, res) => {
   });
 });
 
+
+app.get('/challenges/:challengeName', (req, res) => {
+  const challengeName = req.params.challengeName;
+
+
+  if (req.params.challengeName === "flashcards") {
+    res.sendFile(__dirname + '/challenges/flash-cards.html');
+  }
+});
+
+
+app.get('/challenges/flashcards/questions/:id', (req, res) => {
+  const questionId = parseInt(req.params.id);
+  const question = flashcardQuestions.find(q => q.id === questionId);
+
+
+  if (question) {
+    res.json(question);
+  } else {
+    res.status(404).json({ error: "Fråga hittades inte" });
+  }
+});
 
 app.get('/create-challenge', (req, res) => {
 

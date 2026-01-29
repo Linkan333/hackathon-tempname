@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/flashcard-style.css">
+  <style>
+    .flip-card {
+      background-color: transparent;
+      width: 100%;
+      height: 300px;
+      perspective: 1000px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      border-radius: 8px;
+    }
+
+    .flip-card-front {
+      background-color: #f7f9fa;
+      color: var(--text-main);
+    }
+
+    .flip-card-back {
+      background-color: var(--primary-blue);
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front h4 {
+      font-size: 1.8rem;
+      color: var(--primary-blue);
+      margin-bottom: 15px;
+    }
+
+    .flip-card-back h4 {
+      font-size: 1.8rem;
+      color: white;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">Studyhack</div>
+    <div class="stats-container">
+      <div class="stat-box">Nivå: <span class="value">1</span></div>
+      <div class="stat-box">XP: <span class="value">0</span></div>
+      <div class="stat-box">Streak: <span class="value">0</span></div>
+    </div>
+  </header>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay hidden" id="quizModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Quiz Utmaning</h3>
+      </div>
+
+      <!-- Flip Card -->
+      <div class="flip-card">
+        <div class="flip-card-inner" id="flipCardInner">
+          <div class="flip-card-front">
+            <h4 id="questionText">Vad är 2 + 2?</h4>
+            <p class="hint">Klicka "Vänd" för att se svaret</p>
+          </div>
+          <div class="flip-card-back">
+            <h4 id="answerText">4</h4>
+            <p>Detta är det rätta svaret!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="quiz-controls">
+        <button class="btn-control btn-fail" id="btnFail">
+          ❌ Fel
+        </button>
+        <button class="btn-control btn-flip" id="btnFlip">
+          🔄 Vänd
+        </button>
+        <button class="btn-control btn-success" id="btnSuccess">
+          ✅ Rätt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/challenge-assets/flash-cardscript.js"></script>
+
+</body>
+
+</html>
