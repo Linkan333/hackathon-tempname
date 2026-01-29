@@ -1,6 +1,6 @@
 # Studyhack
 
-**Team:** Kristoffer, Linus, Rafael
+**Team:** Kristoffer Wahlbäck, Linus Nyberg, Rafael Al Najafi Nsaibia
 
 ### Tävlar i kategori:
 **Bästa Helhetslösning**
