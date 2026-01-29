@@ -288,55 +288,60 @@ header {
 }
 
 .quiz-controls {
-    padding: 20px;
-    border-top: 1px solid var(--border-color);
+    padding: 30px;
+    border-top: 1px solid #e0e0e0;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     background: #ffffff;
 }
 
 .btn-control {
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.2 ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    white-space: nowrap;
+  background-color: #ffffff;
+  border: 2px solid;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: 10px;
+  min-width: 130px;
 }
 
 .btn-control:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-fail {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ffcdd2;
+   color: #d32f2f;
+   border-color: #d32f2f;
 }
 
-.btn-fail:hover { background-color: #ffcdd2; }
+.btn-fail:hover {
+    background-color: #d32f2f;
+}
 
 .btn-flip {
-    background-color: #ffffff;
     color: var(--primary-blue);
-    border: 1px solid var(--primary-blue);
+    border-color: var(--primary-blue);
 }
 
 .btn-flip:hover {
     background-color: var(--primary-blue);
-    color: #ffffff;
 }
 
 .btn-success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #c8e6c9;
+   color: #1f7b44;
+   border-color: #1f7b44;
 }
 
-.btn-success:hover { background-color: #c8e6c9; }
+.btn-success:hover {
+    background-color: #1f7b44;
+}
