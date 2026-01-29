@@ -75,6 +75,32 @@
         </section>
     </main>
 
+<div id="quiz-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Webb-Quiz: Fråga 1/10</h3>
+            <button id="close-btn" class="btn-close">✕</button>
+        </div>
+
+        <div class="quiz-card">
+            <div class="card-front">
+                <h4>Vad står HTML för?</h4>
+                <p class="hint">(Klicka här för att vända)</p>
+            </div>
+            <div class="card-back hidden">
+                <h4>HyperText Markup Language</h4>
+                <p>Det är språket som bygger webbens struktur.</p>
+            </div>
+        </div>
+
+        <div class="quiz-controls">
+            <button class="btn-control btn-fail">❌ Kan inte</button>
+            <button class="btn-controll btn-flip">🔄 Vänd</button>
+            <button class="btn-controll btn-success">✅ Kan det!</button>
+        </div>
+    </div>
+</div>
+
     <script src="script.js"></script>
 
 </body>
