@@ -53,6 +53,12 @@ npm version: 11.6.2
 nvm version: 0.39.7
 
 
+### Environment variables
+Create an .env file in the project root wich means /hackathon-tempname/.env
+paste in your open ai api key from their website. You can get it here: https://platform.openai.com/api-keys
+OPENAI_API_KEY=sk-proj
+
+
 ### Install
 
 För att köra projektet lokalt:
