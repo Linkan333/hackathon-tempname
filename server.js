@@ -23,6 +23,32 @@ difficulties.set("Medium", 2);
 difficulties.set("Hard", 3);
 
 
+
+const levelThresholds = new Map();
+
+levelThresholds.set(
+  "1", 50
+);
+
+levelThresholds.set(
+  "2", 100
+);
+
+levelThresholds.set(
+  "3", 150
+);
+
+levelThresholds.set(
+  "4", 200
+);
+
+levelThresholds.set(
+  "5", 500
+);
+
+
+
+
 class Player {
   constructor(username) {
     this.username = username;
@@ -38,8 +64,65 @@ class Player {
   addXp(amount) {
     this.experience += amount;
     console.log(`${this.username} now has ${this.experience} XP`);
+
+    this.checkLevelUp();
+  }
+
+  checkLevelUp() {
+    const nextLevel = (this.currentLevel + 1).toString();
+    const threshold = levelThresholds.get(nextLevel);
+
+    if (threshold && this.experience >= threshold) {
+      thus.currentLevel++;
+      console.log(`${this.username} leveled up to level ${this.currentLevel}`);
+
+
+      this.checkLevelUp();
+    }
+  }
+
+
+  getLevelProgress() {
+    const nextLevel = (this.currentLevel + 1).toString();
+    const nextThreshold = levelThresholds.get(nextLevel);
+
+
+    if (!nextThreshold) {
+      return { level: this.currentLevel, progress: "MAX LEVEL" };
+    }
+
+    const currentThreshold = levelThresholds.get(this.currentLevel.toString()) || 0;
+    const progressInLevel = this.experience - currentThreshold;
+    const xpNeededForNext = nextThreshold - currentThreshold;
+    const percentComplete = (progressInLevel / xpNeededForNext) * 100;
+
+
+    return {
+      level: this.currentLevel,
+      xp: this.experience,
+      nextLevelAt: nextThreshold,
+      xpToNext: nextThreshold - this.experience,
+      percentComplete: Math.round(percentComplete)
+    };
   }
 }
+
+
+
+app.get('/get_question', (req, res) => {
+  const miniGame = req.query.mini_game;
+  const question = req.query.question;
+
+  fs.readFile("challenges.json", "utf-8", (err, data) => {
+    if (err) {
+      res.send("Could not read file")
+    }
+
+    res.send(data);
+  });
+
+  //res.send(data);
+})
 
 /*class Level {
   constructor(username, experience, currentLevel) {
@@ -83,9 +166,16 @@ class Challenges {
           break;
       }
 
+      // making the logic to depend on if the reward for the xp has overgone an threshold
+      // we are going to make it update the levels.
+      
+      //levelThresholds = new Map();
 
       player.addXp(reward);
+
       return true;
+
+
       //streakBegun(player);
 
     }
@@ -112,8 +202,22 @@ class Challenges {
 
 
 const players = new Map();
-var challenges = [];
+var challenges = []
 
+
+app.get('/player-progress', (req, res) => {
+  if (!req.session.player) {
+    return res.status(401).send({ error: "Not logged in" });
+  }
+
+  const player = req.session.player;
+  const progress = player.getLevelProgress();
+
+  res.send({
+    username: player.username,
+    ...progress
+  });
+});
 
 
 
@@ -160,9 +264,21 @@ app.get('/challenges', (req, res) => {
   res.sendFile(__dirname + '/public/challenges.html');
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+
+app.get('/nope', (req, res) => {
+  res.send("<h1>Trodde du allvarligt att vi orkar skriva en <strong>läs mer...</strong></h1>");
+});
 
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + "/public/login/login.html");
+});
+
+app.get('/accomplishment', (req, res) => {
+
 })
 
 app.post('/login', (req, res) => {
