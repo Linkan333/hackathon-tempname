@@ -57,8 +57,6 @@ levelThresholds.set(
 );
 
 
-
-
 class Player {
   constructor(username) {
     this.username = username;
@@ -83,7 +81,7 @@ class Player {
     const threshold = levelThresholds.get(nextLevel);
 
     if (threshold && this.experience >= threshold) {
-      thus.currentLevel++;
+      this.currentLevel++;
       console.log(`${this.username} leveled up to level ${this.currentLevel}`);
 
 
@@ -229,9 +227,9 @@ const subjects = [
 ];
 
 const difficulty = [
-  { id: 1, difficulty: "Easy" },
+  { id: 1, difficulty: "Lätt" },
   { id: 2, difficulty: "Medium" },
-  { id: 3, difficulty: "Hard" },
+  { id: 3, difficulty: "Svår" },
 ];
 
 /*const response = openai.responses.create({
@@ -243,13 +241,13 @@ const difficulty = [
 const result = response.output_text;*/
 
 
-app.post('/challenges/flashcards/')
+//app.post('/challenges/flashcards/')
 
 
-async function storeQuestionsBasedOnSubject() {
+/*async function storeQuestionsBasedOnSubject() {
   const response = openai.responses.create({
     model: 'gpt-5-nano',
-    input: 'ge mig 10 frågor skriv i json format. Det ska vara i format {id: int, "question": "string"}',
+    input: `ge mig 10 frågor skriv i json format. Det ska vara i format {id: int, "question": "string"}. Det ska vara svårighetsgrad ${selectedDifficulty} och det ska vara om ämnet ${selectedSubject}`,
     store: true,
   });
 
@@ -260,7 +258,7 @@ async function storeQuestionsBasedOnSubject() {
   });
 }
 
-storeQuestionsBasedOnSubject();
+storeQuestionsBasedOnSubject();*/
 
 /*const flashcardQuestions = [
   { id: 1, question: "Vad är 2+2", answer: "4" },
@@ -286,7 +284,7 @@ app.get('/player-progress', (req, res) => {
 
 
 
-app.post('/create-challenge', (req, res) => {
+/*app.post('/create-challenge', (req, res) => {
   const { challengeName, challengeDifficulty, challengeAnswer } = req.body;
 
   if (!challengeName || !challengeDifficulty || !challengeAnswer) {
@@ -317,8 +315,44 @@ app.post('/create-challenge', (req, res) => {
     message: "Challenge created",
     challenge
   });
-});
+});*/
 
+
+app.post('/api/generate-questions', async (req, res) => {
+  const { subjectId, difficulty } = req.body;
+
+  if (!subjectId) {
+    return res.status(400).json({ error: "Subject ID behövs" });
+  }
+
+  if (!difficulty) {
+    return res.status(400).json({ error: "Difficulty behövs" });
+  }
+
+  const subject = subjects.find(s => s.id == subjectId);
+
+  if (!subject) {
+    return res.status(404).json({ error: 'Subject hittades inte' });
+  }
+
+  //const difficultyLevel = difficulty.find(d => d.id == difficulty);
+
+  try {
+    console.log(`Generating questions for: ${subject.subject}, Difficulty ${difficulty}`);
+
+    await storeQuestionsBasedOnSubject(subject.subject, difficulty);
+
+    res.json({
+      message: 'Questions generated',
+      subject: subject.subject,
+      difficulty: difficulty,
+      count: 10
+    });
+  } catch (error) {
+    console.error('Error generating questions: ', error)
+    res.status(500).json({ error: 'Failed to generate questions' });
+  }
+});
 
 app.get('/challenges/:challengeName', (req, res) => {
   const challengeName = req.params.challengeName;
@@ -330,26 +364,77 @@ app.get('/challenges/:challengeName', (req, res) => {
 });
 
 
+app.get('/subjects', (req, res) => {
+  //subjectsStringed = JSON.stringify(subjects)
+  res.json(subjects);
+});
+
+app.get('/difficulties', (req, res) => {
+  res.json(difficulty);
+})
+
 app.get('/challenges/flashcards/questions/:id', (req, res) => {
   const questionId = parseInt(req.params.id);
-  //const question = flashcardQuestions.find(q => q.id === questionId);
 
-  const question = fs.readFile("generated_questions.json", "utf-8", (err, data) => {
-    (err) ? res.send({ error: err }) : obj = JSON.parse(data);
-    console.log(obj);
-
-    let length = Object.keys(obj).length;
-    for (let i = 0; i < length; i++) {
-      console.log(obj[i].id);
+  fs.readFile("generated_questions.json", "utf-8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: "Could not read questions file" });
     }
-  })
 
-  if (question) {
-    res.json(question);
-  } else {
-    res.status(404).json({ error: "Fråga hittades inte" });
-  }
+    try {
+      const questions = JSON.parse(data);
+      const question = questions.find(q => q.id === questionId);
+
+      if (question) {
+        res.json(question);
+      } else {
+        res.status(404).json({ error: "Fråga hittades inte" });
+      }
+    } catch (parseError) {
+      res.status(500).json({ error: "Invalid JSON in questions file" });
+    }
+  });
 });
+
+async function storeQuestionsBasedOnSubject(selectedSubject, selectedDifficulty) {
+  try {
+    const response = await openai.responses.create({
+      model: 'gpt-5.1',
+      input: `Ge mig 10 frågor i JSON-format. Format: [{"id": 1, "question": "string", "answer": "string"}]. Svårighetsgrad: ${selectedDifficulty}. Ämne: ${selectedSubject}. 
+      
+Använd LaTeX för matematik med dubbla backslashes i JSON (t.ex. "\\\\(x^2\\\\)" för inline, "\\\\[x^2\\\\]" för display).
+För kod, använd markdown: \`\`\`python\nkod här\n\`\`\`
+Returnera ENDAST valid JSON.`,
+      store: true,
+    });
+
+    let questionsData = response.output_text;
+
+    questionsData = questionsData.replace(/```json\n?/g, '').replace(/```\n?$/g, '').trim();
+
+    try {
+      const parsed = JSON.parse(questionsData);
+      questionsData = JSON.stringify(parsed, null, 2);
+    } catch (parseError) {
+      console.error('Invalid JSON from AI:', parseError);
+      throw new Error('AI returned invalid JSON');
+    }
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile("generated_questions.json", questionsData, 'utf-8', (err) => {
+        if (err) {
+          console.error("Error saving questions", err);
+          reject(err);
+        } else {
+          console.log("Questions saved successfully");
+          resolve();
+        }
+      });
+    });
+  } catch (error) {
+    throw error;
+  }
+}
 
 app.get('/create-challenge', (req, res) => {
 
