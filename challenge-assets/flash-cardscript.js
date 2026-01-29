@@ -8,7 +8,7 @@ const cardFront = document.querySelector('.card-front');
 const cardBack = document.querySelector('.card-back');
 
 const failBtn = document.querySelector('.btn-fail');
-const btnSuccess = document.querySelector('.btn-success');
+const successBtn = document.querySelector('.btn-success');
 
 const xpDisplay = document.getElementById('score');
 let currentXP = 0;
@@ -16,6 +16,9 @@ let currentXP = 0;
 startButtons.forEach(button => {
     button.addEventListener('click', () => {
         modal.classList.remove('hidden');
+        cardBack.classList.add('hidden');
+
+        cardFront.classList.remove('hidden');
         cardBack.classList.add('hidden');
     });
 });
@@ -40,7 +43,7 @@ quizCard.addEventListener('click', flipCard);
 
 successBtn.addEventListener('click', () => {
     currentXP += 10;
-    xpDisplay.innterText = currentXP;
+    xpDisplay.innerText = currentXP;
 
     modal.classList.add('hidden');
     alert("Bra jobbat! +10 XP");
