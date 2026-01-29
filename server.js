@@ -234,18 +234,33 @@ const difficulty = [
   { id: 3, difficulty: "Hard" },
 ];
 
-const response = openai.responses.create({
+/*const response = openai.responses.create({
   model: 'gpt-5-nano',
-  input: 'ge mig 10 frågor',
+  input: 'ge mig 10 frågor skriv i json format.',
   store: true,
 });
 
-response.then((result) => console.log(result.output_text));
+const result = response.output_text;*/
 
 
-async function storeQuestionsBasedOnSubject(subject) {
+app.post('/challenges/flashcards/')
 
+
+async function storeQuestionsBasedOnSubject() {
+  const response = openai.responses.create({
+    model: 'gpt-5-nano',
+    input: 'ge mig 10 frågor skriv i json format. Det ska vara i format {id: int, "question": "string"}',
+    store: true,
+  });
+
+  fs.writeFile("generated_questions.json", ((await response).output_text), 'utf-8', (err) => {
+    if (err) {
+      return res.status(404).send({ error: "Fuck you!" });
+    }
+  });
 }
+
+storeQuestionsBasedOnSubject();
 
 /*const flashcardQuestions = [
   { id: 1, question: "Vad är 2+2", answer: "4" },
@@ -317,8 +332,17 @@ app.get('/challenges/:challengeName', (req, res) => {
 
 app.get('/challenges/flashcards/questions/:id', (req, res) => {
   const questionId = parseInt(req.params.id);
-  const question = flashcardQuestions.find(q => q.id === questionId);
+  //const question = flashcardQuestions.find(q => q.id === questionId);
 
+  const question = fs.readFile("generated_questions.json", "utf-8", (err, data) => {
+    (err) ? res.send({ error: err }) : obj = JSON.parse(data);
+    console.log(obj);
+
+    let length = Object.keys(obj).length;
+    for (let i = 0; i < length; i++) {
+      console.log(obj[i].id);
+    }
+  })
 
   if (question) {
     res.json(question);
