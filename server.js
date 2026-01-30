@@ -481,6 +481,62 @@ app.post('/login', (req, res) => {
 });
 
 
+async function userData(req, res) {
+  const url = "http://localhost:3000/login";
+  
+  const formData = new URLSearchParams();
+  formData.append('username', 'experience')
+
+  console.log(formData)
+
+
+  
+  try {
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+  
+    const responseMsg = await response.text();
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+
+
+    const UserResult = JSON.parse(responseMsg)
+    let promise = Promise.resolve(UserResult);
+
+    const jsonString = JSON.stringify(UserResult, null, 2)
+
+    fs.writeFile('user.json', jsonString, "utf-8", (err) => {
+  if (err) {
+    console.log(err)
+  }
+  else {
+    console.log("User data written")
+  }
+  });
+
+    promise.then(function (UserResult) {
+      console.log(UserResult)
+    });
+    
+  }
+  
+  catch (err) {
+    console.log(err.message)
+  }
+  
+}
+
+
+
 
 
 
